@@ -20,4 +20,6 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_settings2">SettingsActivity2</string>
+    <string name="goal">Goal</string>
+    <string name="moves">Moves</string>
 </resources>

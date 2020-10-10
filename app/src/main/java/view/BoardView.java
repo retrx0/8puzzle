@@ -46,7 +46,7 @@ public class BoardView extends View implements OnClickListener {
 
         private int solving; // Equal to n number of moves from goal when AI is animating solution to puzzle.  Counts down to 0.
         private final MotionEvent cpuTouch = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        private final float aiDuration = 1500; // Piece animation duration on cpuTouch.
+        private final float aiDuration = 1000; // Piece animation duration on cpuTouch.
 
         public BoardView(Context context) {
             super(context);
@@ -254,14 +254,14 @@ public class BoardView extends View implements OnClickListener {
             String spacing = " ";
             int count = shortestPath.getNumOfMoves();
             if (count < 10) spacing = "   ";
-//            game.goalView.setText(game.getString(R.string.goal) + spacing + count);
+            game.goalView.setText(game.getString(R.string.goal) + spacing + count);
         }
 
         private void updateMoves() {
             ++moves;
-//            String message = game.getString(R.string.moves) + " " + moves;
-//            Log.d(TAG, message);
-//            game.moveView.setText(message);
+            String message = game.getString(R.string.moves) + " " + moves;
+            Log.d(TAG, message);
+            game.moveView.setText(message);
         }
 
         public void pause() {

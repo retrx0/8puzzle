@@ -11,16 +11,16 @@ public class Move {
     public final Action action;
     private final Board fromBoard;
 
-    public Move(Board frmBoard, Action action) {
-        switch (action){
-            case UP: fromIndex = frmBoard.blankIndex-frmBoard.size; break;
-            case DOWN: fromIndex = frmBoard.blankIndex+frmBoard.size; break;
-            case LEFT: fromIndex = frmBoard.blankIndex+1; break;
-            case RIGHT: fromIndex = frmBoard.blankIndex-1;break;
+    public Move(Board fromBoard, Action action) {
+        switch (action) {
+            case RIGHT: fromIndex = fromBoard.blankIndex - 1; break;
+            case LEFT: fromIndex = fromBoard.blankIndex + 1; break;
+            case DOWN: fromIndex = fromBoard.blankIndex - fromBoard.size; break;
+            case UP: fromIndex = fromBoard.blankIndex + fromBoard.size; break;
             default: fromIndex = -1;
         }
         this.action = action;
-        this.fromBoard = frmBoard;
+        this.fromBoard = fromBoard;
     }
 
 

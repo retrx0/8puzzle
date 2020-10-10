@@ -57,24 +57,25 @@ public class Board {
         return null;
     }
 
-    public int getIndex(int row, int col){
-        return (row+1) * size + col +1 ;
+    public int getIndex(int row, int col) {
+        return (row + 1) * size + col + 1;
     }
 
-    public  int getRow(int boardIndex){
-        return boardIndex / size-1;
+    public int getRow(int boardIndex) {
+        return boardIndex / size - 1;
     }
 
-    public int getCol(int boardIndex){
-        return boardIndex % size-1;
+    public int getCol(int boardIndex) {
+        return boardIndex % size - 1;
     }
 
-    public char getChar(int row, int col){
+    public char getChar(int row, int col) {
         return board.charAt(getIndex(row, col));
     }
 
-    public int getSize(){
-        return size-2;
+    public int getSize() {
+        // square of board without borders
+        return size - 2;
     }
 
     @Override

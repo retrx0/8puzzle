@@ -19,8 +19,10 @@
 
     <Button
         android:id="@+id/solveBtn"
-        android:layout_width="88dp"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="300dp"
+        android:layout_marginLeft="300dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
@@ -28,15 +30,39 @@
         android:text="@string/solve_btn_text"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/boardView" />
 
     <view.BoardView
         android:id="@+id/boardView"
-        android:layout_width="339dp"
-        android:layout_height="436dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="104dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/solveBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/goal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/goal"
+        tools:layout_editor_absoluteX="75dp"
+        tools:layout_editor_absoluteY="102dp" />
+
+    <TextView
+        android:id="@+id/moves"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/moves"
+        tools:layout_editor_absoluteX="248dp"
+        tools:layout_editor_absoluteY="96dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

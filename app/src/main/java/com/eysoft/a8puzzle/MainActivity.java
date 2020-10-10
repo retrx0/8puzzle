@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     public BoardView boardView;
-//    public TextView moveView;
+    public TextView moveView;
     public TextView goalView;
 //    public Button newPuzzle;
     public Button solve;
@@ -53,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         boardView = (BoardView) findViewById(R.id.boardView);
-//        moveView = (TextView) findViewById(R.id.moves);
-//        goalView = (TextView) findViewById(R.id.goal);
-//        newPuzzle = (Button) findViewById(R.id.newPuzzle);
+        moveView = (TextView) findViewById(R.id.moves);
+        goalView = (TextView) findViewById(R.id.goal);
+////        newPuzzle = (Button) findViewById(R.id.newPuzzle);
         solve = (Button) findViewById(R.id.solveBtn);
-//        skipAhead = (Button) findViewById(R.id.skipAhead);
-
+////        skipAhead = (Button) findViewById(R.id.skipAhead);
+//
         goal = new Board("123 456 780");
         solver = new SolverMemoDecorator(new AStar(goal, new HeuristicManhattan(goal)));
         setupBoardView();
@@ -92,5 +92,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        }
+    }
 }
