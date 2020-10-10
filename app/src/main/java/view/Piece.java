@@ -1,7 +1,6 @@
 package view;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -30,6 +29,9 @@ public class Piece {
     public static float width;
     public static float height;
 
+    public static int[] colors = {Color.rgb(0,191,255), Color.rgb(0,191,255)};
+    public static int shadowColor = Color.rgb(197,197,197);
+
     public Piece(String id, int row, int col) {
         this.id = id;
         this.row = row;
@@ -46,7 +48,7 @@ public class Piece {
         int rht = (int) width - margin;
         int bot = (int) height - margin;
 
-        int[] colors = {Color.rgb(0,191,255), Color.rgb(0,191,255)};
+
 
 		/*
 		Resources res = game.getResources();
@@ -63,7 +65,7 @@ public class Piece {
 
         ShapeDrawable shadow = new ShapeDrawable(tile);
         shadow.setBounds(margin, margin, rht, bot);
-        shadow.getPaint().setShadowLayer(1, margin, margin, Color.rgb(197,197,197));
+        shadow.getPaint().setShadowLayer(1, margin, margin, shadowColor);
         shadow.draw(canvas);
 
         ShapeDrawable drawable = new ShapeDrawable(tile);

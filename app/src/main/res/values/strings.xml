@@ -6,23 +6,25 @@
     <string name="title_activity_settings">SettingsActivity</string>
 
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="other_header">Other</string>
+    <string name="display_header">Appearance</string>
 
-    <!-- Messages Preferences -->
+    <string name="list_item_1">3x3</string>
+    <string name="list_item_2">4x4</string>
+    <string-array name="list_items">3x3,4x4</string-array>
+
+    <!--Preferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
 
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+
+
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="title_activity_settings2">SettingsActivity2</string>
-    <string name="goal">Goal: </string>
+    <string name="goal">Moves to Goal: </string>
     <string name="moves">Moves: </string>
     <string name="shuffle">Shuffle</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_heading">About</string>
 </resources>

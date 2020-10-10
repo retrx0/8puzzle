@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -15,5 +16,15 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if(findViewById(R.id.settings_fragment) != null){
+            if (savedInstanceState != null)
+                return;
+            getSupportFragmentManager().beginTransaction().add(R.id.settings_fragment, new SettingsFragment()).commit();
+        }
+
     }
+
+
+
 }

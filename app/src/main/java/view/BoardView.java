@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.MotionEvent;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
@@ -36,7 +37,7 @@ public class BoardView extends View implements OnClickListener {
         protected int moves;
         private Path shortestPath;
         protected int perfectPlay = -1; // move benchmark set on first call to updateAI
-        private final float playerDuration = 200; // Piece animation duration on player touch.
+        private final float playerDuration =50; // Piece animation duration on player touch.
 
         private Map<Character, Piece> pieces;
         private Piece touched;
@@ -46,7 +47,7 @@ public class BoardView extends View implements OnClickListener {
 
         private int solving; // Equal to n number of moves from goal when AI is animating solution to puzzle.  Counts down to 0.
         private final MotionEvent cpuTouch = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        private final float aiDuration = 200; // Piece animation duration on cpuTouch.
+        private final float aiDuration = 100; // Piece animation duration on cpuTouch.
 
         public BoardView(Context context) {
             super(context);
@@ -65,7 +66,7 @@ public class BoardView extends View implements OnClickListener {
             board = game.solver.generateBoard();
             moves = -1; // incremented to 0 in updateMoves()
             solving = 0;
-            an = new Animator(playerDuration, new OvershootInterpolator());
+            an = new Animator(playerDuration, new AccelerateDecelerateInterpolator());
 
             pieces = createPieces();
             touched = null;

@@ -21,7 +21,7 @@ public class WinFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
-        return new AlertDialog.Builder(getActivity()).setTitle("win").setMessage("You Solved it")
+        return new AlertDialog.Builder(getActivity()).setTitle("Congratulations").setMessage("Wow you actually solved it")
                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

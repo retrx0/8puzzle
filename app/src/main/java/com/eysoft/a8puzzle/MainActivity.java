@@ -1,11 +1,14 @@
 package com.eysoft.a8puzzle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.gridlayout.widget.GridLayout;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -27,6 +30,7 @@ import AI.Solver;
 import AI.SolverMemoDecorator;
 import model.Board;
 import view.BoardView;
+import view.Piece;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -59,11 +63,52 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        int nightModeFlags =
+                getBaseContext().getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                setTheme(R.style.DarkTheme);
+                Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+                Piece.shadowColor = Color.rgb(22,22,22);
+                break;
+
+            case Configuration.UI_MODE_NIGHT_NO:
+                setTheme(R.style.AppTheme);
+                Piece.shadowColor = Color.rgb(32,32,32);
+                Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+                break;
+
+            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                if(findViewById(R.id.darkModeSwitchPref).isSelected()){
+                    setTheme(R.style.DarkTheme);
+                    Piece.shadowColor = Color.rgb(22,22,22);
+                    Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+                }
+                else{
+                    setTheme(R.style.AppTheme);
+                    Piece.shadowColor = Color.rgb(32,32,32);
+                    Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+                }
+
+                break;
+        }
+
+//        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+//            setTheme(R.style.DarkTheme);
+//            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+//        }
+//        else {
+//            setTheme(R.style.AppTheme);
+//            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+//        }
 
         boardView = (BoardView) findViewById(R.id.boardView);
         moveView = (TextView) findViewById(R.id.moves);
