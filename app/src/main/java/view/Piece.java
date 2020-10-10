@@ -65,7 +65,7 @@ public class Piece {
 
         ShapeDrawable shadow = new ShapeDrawable(tile);
         shadow.setBounds(margin, margin, rht, bot);
-        shadow.getPaint().setShadowLayer(1, margin, margin, shadowColor);
+        shadow.getPaint().setShadowLayer(1, margin-4, margin, shadowColor);
         shadow.draw(canvas);
 
         ShapeDrawable drawable = new ShapeDrawable(tile);

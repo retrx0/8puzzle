@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             case Configuration.UI_MODE_NIGHT_NO:
                 setTheme(R.style.AppTheme);
-                Piece.shadowColor = Color.rgb(32,32,32);
+                Piece.shadowColor = Color.rgb(197,197,197);
                 Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
                 break;
 
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
                 else{
                     setTheme(R.style.AppTheme);
-                    Piece.shadowColor = Color.rgb(32,32,32);
+                    Piece.shadowColor = Color.rgb(197,197,197);
                     Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
                 }
 
