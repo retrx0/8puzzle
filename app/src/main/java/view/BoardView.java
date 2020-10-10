@@ -36,7 +36,7 @@ public class BoardView extends View implements OnClickListener {
         protected int moves;
         private Path shortestPath;
         protected int perfectPlay = -1; // move benchmark set on first call to updateAI
-        private final float playerDuration = 300; // Piece animation duration on player touch.
+        private final float playerDuration = 200; // Piece animation duration on player touch.
 
         private Map<Character, Piece> pieces;
         private Piece touched;
@@ -46,7 +46,7 @@ public class BoardView extends View implements OnClickListener {
 
         private int solving; // Equal to n number of moves from goal when AI is animating solution to puzzle.  Counts down to 0.
         private final MotionEvent cpuTouch = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        private final float aiDuration = 1000; // Piece animation duration on cpuTouch.
+        private final float aiDuration = 200; // Piece animation duration on cpuTouch.
 
         public BoardView(Context context) {
             super(context);
@@ -99,8 +99,8 @@ public class BoardView extends View implements OnClickListener {
             if (game.outBoard == null) {
                 game.outBoard = new TranslateAnimation(0, w, 0, 0);
                 game.inBoard = new TranslateAnimation(-w, 0, 0, 0);
-                game.outBoard.setDuration(900);
-                game.inBoard.setDuration(900);
+                game.outBoard.setDuration(300);
+                game.inBoard.setDuration(300);
                 game.outBoard.setStartTime(Animation.START_ON_FIRST_FRAME);
                 game.inBoard.setStartTime(Animation.START_ON_FIRST_FRAME);
                 Interpolator i = new DecelerateInterpolator();
@@ -111,7 +111,7 @@ public class BoardView extends View implements OnClickListener {
 
         @Override
         protected void onDraw(Canvas canvas) {
-            canvas.drawColor(Color.BLACK); // Draw background
+            canvas.drawColor(Color.TRANSPARENT); // Draw background
 
             for (Piece piece : pieces.values()) // Draw all non-touched pieces
                 if (!piece.equals(touched))
@@ -188,10 +188,10 @@ public class BoardView extends View implements OnClickListener {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-//                case R.id.newPuzzle:
-//                    pause();
-//                    newPuzzle();
-//                    break;
+                case R.id.shuffle:
+                    pause();
+                    newPuzzle();
+                    break;
                 case R.id.solveBtn:
                     moveAhead(shortestPath.getNumOfMoves());
                     break;
@@ -231,7 +231,7 @@ public class BoardView extends View implements OnClickListener {
         }
 
         private void checkWin() {
-//            if (board.equals(game.goal)) game.showMyDialog(MainActivity.DIALOG_WIN);
+            if (board.equals(game.goal)) game.showMyDialog(MainActivity.DIALOG_WIN);
         }
 
         private void updateAI() {

@@ -46,7 +46,7 @@ public class Piece {
         int rht = (int) width - margin;
         int bot = (int) height - margin;
 
-        int[] colors = {Color.CYAN, Color.BLUE};
+        int[] colors = {Color.rgb(0,191,255), Color.rgb(0,191,255)};
 
 		/*
 		Resources res = game.getResources();
@@ -55,7 +55,7 @@ public class Piece {
 						res.getColor(R.color.DarkCyan)};
 		*/
 
-        float radius = 16;
+        float radius = 5;
         RoundRectShape tile = new RoundRectShape(
                 new float[] {radius, radius, radius, radius, radius, radius, radius, radius},
                 null,
@@ -63,7 +63,7 @@ public class Piece {
 
         ShapeDrawable shadow = new ShapeDrawable(tile);
         shadow.setBounds(margin, margin, rht, bot);
-        shadow.getPaint().setShadowLayer(1, margin, margin, Color.DKGRAY);
+        shadow.getPaint().setShadowLayer(1, margin, margin, Color.rgb(197,197,197));
         shadow.draw(canvas);
 
         ShapeDrawable drawable = new ShapeDrawable(tile);
