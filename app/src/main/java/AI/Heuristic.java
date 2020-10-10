@@ -1,11 +1,9 @@
 package AI;
 
-import com.eysoft.a8puzzle.MainActivity;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import Model.Board;
+import model.Board;
 
 public abstract class Heuristic {
     protected final Board goal;

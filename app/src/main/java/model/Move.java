@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

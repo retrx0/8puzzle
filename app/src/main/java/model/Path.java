@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +44,14 @@ public class Path implements Comparable<Path> {
     }
 
     public int getNumOFMoves(){
+        return pathCost;
+    }
+
+    public Board getLastBoard() {
+        return (Board) path.get(path.size() - 1);
+    }
+
+    public int getNumOfMoves() {
         return pathCost;
     }
 

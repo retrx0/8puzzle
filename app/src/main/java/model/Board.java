@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,10 +41,10 @@ public class Board {
 
     public List<Move> getValidMoves(){
         List<Move> moves = new ArrayList<Move>();
-        if(board.charAt(blankIndex-1) != BORDER) moves.add(new Move(this, Move.Action.RIGHT));
-        if(board.charAt(blankIndex+1) != BORDER) moves.add(new Move(this, Move.Action.LEFT));
-        if(board.charAt(blankIndex-size) != BORDER) moves.add(new Move(this, Move.Action.DOWN));
-        if(board.charAt(blankIndex+size) != BORDER) moves.add(new Move(this, Move.Action.UP));
+        if (board.charAt(blankIndex - 1) != BORDER) moves.add(new Move(this, Move.Action.RIGHT));
+        if (board.charAt(blankIndex + 1) != BORDER) moves.add(new Move(this, Move.Action.LEFT));
+        if (board.charAt(blankIndex - size) != BORDER) moves.add(new Move(this, Move.Action.DOWN));
+        if (board.charAt(blankIndex + size) != BORDER) moves.add(new Move(this, Move.Action.UP));
         return moves;
     }
 
