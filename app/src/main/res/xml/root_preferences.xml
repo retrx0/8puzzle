@@ -1,7 +1,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/display_header">
+    <PreferenceCategory android:title="Settings">
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:visibility="visible"
+        app:title="@string/display_header">
 
         <SwitchPreferenceCompat
             android:id="@+id/darkModeSwitchPref"
@@ -11,10 +16,13 @@
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/other_header">
 
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="true"
+            android:entries="@array/list_items"
+            android:entryValues="@array/list_items"
+            android:icon="@drawable/ic_baseline_grid_on_24"
+            android:key="grid_size"
+            android:title="Grid Size" />
 
     </PreferenceCategory>
 
