@@ -1,16 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#00bfff</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:background">#ffffff</item>
         <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/colorPrimary</item>
     </style>
 
     <!-- Dark theme. -->
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DarkTheme" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#212121</item>
         <item name="colorPrimaryDark">#000000</item>
@@ -21,6 +22,7 @@
         <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:windowBackground">#000000</item>
         <item name="android:colorBackground">#000000</item>
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/white</item>
     </style>
 
 </resources>

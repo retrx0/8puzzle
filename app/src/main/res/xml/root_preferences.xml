@@ -8,6 +8,10 @@
         android:visibility="visible"
         app:title="@string/display_header">
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="auto_dark_mode"
+            android:title="Auto Dark Mode" />
         <SwitchPreferenceCompat
             android:id="@+id/darkModeSwitchPref"
             app:key="dm"

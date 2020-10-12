@@ -70,46 +70,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        int nightModeFlags =
-                getBaseContext().getResources().getConfiguration().uiMode &
-                        Configuration.UI_MODE_NIGHT_MASK;
-        switch (nightModeFlags) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                setTheme(R.style.DarkTheme);
-                Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-                Piece.shadowColor = Color.rgb(22,22,22);
-                break;
-
-            case Configuration.UI_MODE_NIGHT_NO:
-                setTheme(R.style.AppTheme);
-                Piece.shadowColor = Color.rgb(197,197,197);
-                Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-                break;
-
-            case Configuration.UI_MODE_NIGHT_UNDEFINED:
-                if(findViewById(R.id.darkModeSwitchPref).isSelected()){
-                    setTheme(R.style.DarkTheme);
-                    Piece.shadowColor = Color.rgb(22,22,22);
-                    Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-                }
-                else{
-                    setTheme(R.style.AppTheme);
-                    Piece.shadowColor = Color.rgb(197,197,197);
-                    Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-                }
-
-                break;
-        }
-
-//        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
-//            setTheme(R.style.DarkTheme);
-//            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-//        }
-//        else {
-//            setTheme(R.style.AppTheme);
-//            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-//        }
-
         boardView = (BoardView) findViewById(R.id.boardView);
         moveView = (TextView) findViewById(R.id.moves);
         goalView = (TextView) findViewById(R.id.goal);
@@ -128,6 +88,50 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerometer != null) {
             mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+        int nightModeFlags =
+                getBaseContext().getResources().getConfiguration().uiMode &
+                        Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                setTheme(R.style.DarkTheme);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+                Piece.shadowColor = Color.rgb(22,22,22);
+                break;
+
+            case Configuration.UI_MODE_NIGHT_NO:
+                setTheme(R.style.AppTheme);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                Piece.shadowColor = Color.rgb(197,197,197);
+                Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+                break;
+
+            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+//                if(findViewById(R.id.darkModeSwitchPref).isSelected()){
+//                    setTheme(R.style.DarkTheme);
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                    Piece.shadowColor = Color.rgb(22,22,22);
+//                    Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+//                }
+//                else{
+//                    setTheme(R.style.AppTheme);
+//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                    Piece.shadowColor = Color.rgb(197,197,197);
+//                    Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+//                }
+
+                break;
+        }
+
+//        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
+//            setTheme(R.style.DarkTheme);
+//            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+//        }
+//        else {
+//            setTheme(R.style.AppTheme);
+//            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+//        }
     }
 
     @Override
@@ -209,4 +213,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
 }
