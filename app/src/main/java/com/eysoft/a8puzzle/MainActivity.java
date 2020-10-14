@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 double acceleration = Math.sqrt(Math.pow(x, 2) +
                         Math.pow(y, 2) +
                         Math.pow(z, 2)) - SensorManager.GRAVITY_EARTH;
-                Log.d("8puzzle", "Acceleration is " + acceleration + "m/s^2");
                 if (acceleration > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
                     Log.d("8puzzle", "Shake, Rattle, and Roll");
@@ -214,4 +213,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    public void gridSizeChangeOnClick(MenuItem item) {
+
+    }
 }

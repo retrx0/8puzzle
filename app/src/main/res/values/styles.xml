@@ -8,6 +8,7 @@
         <item name="android:background">#ffffff</item>
         <item name="android:popupTheme" tools:targetApi="lollipop">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/colorPrimary</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/colorAccent</item>
     </style>
 
     <!-- Dark theme. -->
@@ -23,6 +24,7 @@
         <item name="android:windowBackground">#000000</item>
         <item name="android:colorBackground">#000000</item>
         <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/white</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/colorAccent</item>
     </style>
 
 </resources>
