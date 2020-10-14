@@ -27,6 +27,10 @@
             android:icon="@drawable/ic_baseline_grid_on_24"
             android:key="grid_size"
             android:title="Grid Size" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="switch_preference_2"
+            android:title="Display Time" />
 
     </PreferenceCategory>
 
