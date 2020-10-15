@@ -19,11 +19,13 @@ import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.animation.Interpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.eysoft.a8puzzle.MainActivity;
 import com.eysoft.a8puzzle.R;
 
 import model.Board;
+import model.CountUpTimer;
 import model.Move;
 import model.Path;
 
@@ -184,6 +186,12 @@ public class BoardView extends View implements OnClickListener {
                 default:
                     return false;
             }
+//            CountUpTimer cu = new CountUpTimer(1000) {
+//                @Override
+//                public void onTick(int second) {
+////                    (TextView)findViewById(R.id.timeTextView)
+//                }
+//            }
         }
 
         @Override
