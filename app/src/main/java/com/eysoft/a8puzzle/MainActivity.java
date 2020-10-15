@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void gridSizeChangeOnClick(MenuItem item) {
-
+        DialogFragment grid_select = new GridSelectFragment();
+        grid_select.show(getSupportFragmentManager(), "Grid Select");
     }
 }
