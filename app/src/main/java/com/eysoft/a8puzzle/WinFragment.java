@@ -31,7 +31,7 @@ public class WinFragment extends DialogFragment {
                 .setPositiveButton(R.string.shuffle, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((MainActivity) getActivity()).boardView.newPuzzle();
+                        ((MainActivity) getActivity()).boardView.newPuzzle("123 456 780");
                     }
                 })
                 .create();

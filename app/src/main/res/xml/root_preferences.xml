@@ -8,13 +8,9 @@
         android:visibility="visible"
         app:title="@string/display_header">
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="auto_dark_mode"
-            android:title="Auto Dark Mode" />
         <SwitchPreferenceCompat
             android:id="@+id/darkModeSwitchPref"
-            app:key="dm"
+            app:key="darkmode_switch_pref"
             app:title="Dark Mode" />
 
     </PreferenceCategory>
@@ -29,7 +25,7 @@
             android:title="Grid Size" />
         <SwitchPreference
             android:defaultValue="false"
-            android:key="switch_preference_2"
+            android:key="display_time_pref"
             android:title="Display Time" />
 
     </PreferenceCategory>

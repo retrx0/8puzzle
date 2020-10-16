@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -18,7 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public Button solve;
 //    public Button skipAhead;
 
+    public TextView timerTextView;
     public Board goal;
     public Solver solver;
 
@@ -60,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long mLastShakeTime;
     private SensorManager mSensorMgr;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -75,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         goalView = (TextView) findViewById(R.id.goal);
         shuffle = (Button) findViewById(R.id.shuffle);
         solve = (Button) findViewById(R.id.solveBtn);
-////        skipAhead = (Button) findViewById(R.id.skipAhead);
-//
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
+        //        skipAhead = (Button) findViewById(R.id.skipAhead);
         goal = new Board("123 456 780");
         solver = new SolverMemoDecorator(new AStar(goal, new HeuristicManhattan(goal)));
         setupBoardView();
@@ -89,20 +90,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
 
-        int nightModeFlags =
-                getBaseContext().getResources().getConfiguration().uiMode &
-                        Configuration.UI_MODE_NIGHT_MASK;
+        int nightModeFlags = getBaseContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         switch (nightModeFlags) {
             case Configuration.UI_MODE_NIGHT_YES:
                 setTheme(R.style.DarkTheme);
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
                 Piece.shadowColor = Color.rgb(22,22,22);
                 break;
 
             case Configuration.UI_MODE_NIGHT_NO:
                 setTheme(R.style.AppTheme);
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 Piece.shadowColor = Color.rgb(197,197,197);
                 Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
                 break;
@@ -124,14 +121,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
         }
 
-//        if(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES){
-//            setTheme(R.style.DarkTheme);
-//            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-//        }
-//        else {
-//            setTheme(R.style.AppTheme);
-//            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-//        }
     }
 
     @Override
@@ -144,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         Log.d(TAG, "Resuming activity...");
+
         super.onResume();
     }
 
@@ -217,4 +207,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         DialogFragment grid_select = new GridSelectFragment();
         grid_select.show(getSupportFragmentManager(), "Grid Select");
     }
+
 }

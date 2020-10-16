@@ -21,9 +21,15 @@ import android.view.animation.Interpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
+import com.eysoft.a8puzzle.GridSelectFragment;
 import com.eysoft.a8puzzle.MainActivity;
 import com.eysoft.a8puzzle.R;
+import com.eysoft.a8puzzle.SettingsActivity;
+import com.eysoft.a8puzzle.SettingsFragment;
 
+import AI.AStar;
+import AI.HeuristicManhattan;
+import AI.SolverMemoDecorator;
 import model.Board;
 import model.CountUpTimer;
 import model.Move;
@@ -84,7 +90,30 @@ public class BoardView extends View implements OnClickListener {
             for (int row = 0; row < board.getSize(); ++row)
                 for (int col = 0; col < board.getSize(); ++col) {
                     char p = board.getChar(row, col);
-                    if (p != Board.BLANK) result.put(p, new Piece(String.valueOf(p), row, col));
+                    if (p != Board.BLANK){
+                        switch (p) {
+                            case 'A':
+                                result.put(p, new Piece(String.valueOf("10"), row, col));
+                                break;
+                            case 'B':
+                                result.put(p, new Piece(String.valueOf("11"), row, col));
+                                break;
+                            case 'C':
+                                result.put(p, new Piece(String.valueOf("12"), row, col));
+                                break;
+                            case 'D':
+                                result.put(p, new Piece(String.valueOf("13"), row, col));
+                                break;
+                            case 'E':
+                                result.put(p, new Piece(String.valueOf("14"), row, col));
+                                break;
+                            case 'F':
+                                result.put(p, new Piece(String.valueOf("15"), row, col));
+                                break;
+                            default:
+                                result.put(p, new Piece(String.valueOf(p), row, col));
+                        }
+                    }
                 }
             return result;
         }
@@ -186,12 +215,6 @@ public class BoardView extends View implements OnClickListener {
                 default:
                     return false;
             }
-//            CountUpTimer cu = new CountUpTimer(1000) {
-//                @Override
-//                public void onTick(int second) {
-////                    (TextView)findViewById(R.id.timeTextView)
-//                }
-//            }
         }
 
         @Override
@@ -199,7 +222,10 @@ public class BoardView extends View implements OnClickListener {
             switch (v.getId()) {
                 case R.id.shuffle:
                     pause();
-                    newPuzzle();
+                    if(GridSelectFragment.selection.equals("3x3"))
+                        newPuzzle("123 456 780");
+                    else if(GridSelectFragment.selection.equals("4x4"))
+                        newPuzzle("1234 5678 9ABC DEF0");
                     break;
                 case R.id.solveBtn:
                     moveAhead(shortestPath.getNumOfMoves());
@@ -210,8 +236,12 @@ public class BoardView extends View implements OnClickListener {
             }
         }
 
-        public void newPuzzle() {
+        public void newPuzzle(String boardString) {
             game.boardView = new BoardView(game);
+            game.goal = new Board(boardString);
+
+            game.solver = new SolverMemoDecorator(new AStar(game.goal, new HeuristicManhattan(game.goal)));
+
             game.setupBoardView();
             this.startAnimation(game.outBoard);
             game.boardView.startAnimation(game.inBoard);
@@ -220,6 +250,17 @@ public class BoardView extends View implements OnClickListener {
             int index = parent.indexOfChild(this);
             parent.removeView(this);
             parent.addView(game.boardView, index, getLayoutParams());
+            if(SettingsFragment.enableTimer){
+                final CountUpTimer timer  = new CountUpTimer(30000) {
+                    @Override
+                    public void onTick(int second) {
+                        game.timerTextView.setText("Time: "+second);
+                        System.out.println(second);
+                    }
+                };
+                timer.start();
+            }
+
         }
 
         private void moveAhead(int moves) {
