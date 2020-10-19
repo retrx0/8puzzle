@@ -1,14 +1,11 @@
 package com.eysoft.a8puzzle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
-import androidx.gridlayout.widget.GridLayout;
-import androidx.preference.SwitchPreference;
-import androidx.preference.SwitchPreferenceCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -34,8 +31,6 @@ import view.BoardView;
 import view.Piece;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-
-    GridLayout puzzleGrid;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -89,36 +84,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerometer != null) {
             mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        if (SettingsFragment.isAutoDarkMode){
+            int nightModeFlags = getBaseContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            switch (nightModeFlags) {
+                case Configuration.UI_MODE_NIGHT_YES:
+                    setTheme(R.style.DarkTheme);
+                    setDarkMode(true);
+                    break;
 
-        int nightModeFlags = getBaseContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        switch (nightModeFlags) {
-            case Configuration.UI_MODE_NIGHT_YES:
-                setTheme(R.style.DarkTheme);
-                Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-                Piece.shadowColor = Color.rgb(22,22,22);
-                break;
+                case Configuration.UI_MODE_NIGHT_NO:
+                    setTheme(R.style.AppTheme);
+                    setDarkMode(false);
+                    break;
 
-            case Configuration.UI_MODE_NIGHT_NO:
-                setTheme(R.style.AppTheme);
-                Piece.shadowColor = Color.rgb(197,197,197);
-                Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-                break;
-
-            case Configuration.UI_MODE_NIGHT_UNDEFINED:
-//                if(findViewById(R.id.darkModeSwitchPref).isSelected()){
-//                    setTheme(R.style.DarkTheme);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//                    Piece.shadowColor = Color.rgb(22,22,22);
-//                    Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-//                }
-//                else{
-//                    setTheme(R.style.AppTheme);
-//                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//                    Piece.shadowColor = Color.rgb(197,197,197);
-//                    Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-//                }
-
-                break;
+                case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                    break;
+            }
+        }else {
+            if (SettingsFragment.isPrefDarkModeEnabled){
+                setTheme(R.style.StandardDark);
+                setDarkMode(true);
+            }else {
+                setTheme(R.style.StandardLight);
+                setDarkMode(false);
+            }
         }
 
     }
@@ -177,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -192,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 if (acceleration > SHAKE_THRESHOLD) {
                     mLastShakeTime = curTime;
                     Log.d("8puzzle", "Shake, Rattle, and Roll");
-                    Toast.makeText(this, "Shake Detected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Shuffled", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -206,6 +194,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void gridSizeChangeOnClick(MenuItem item) {
         DialogFragment grid_select = new GridSelectFragment();
         grid_select.show(getSupportFragmentManager(), "Grid Select");
+    }
+
+    public static void setDarkMode(boolean mode){
+        if (mode){
+            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+            Piece.shadowColor = Color.rgb(22,22,22);
+        }
+        else {
+            Piece.shadowColor = Color.rgb(197,197,197);
+            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+        }
     }
 
 }
