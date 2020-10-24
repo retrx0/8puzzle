@@ -1,4 +1,4 @@
-<h1><img align="left" width="80" height="80" src="https://github.com/retrx0/8puzzle/" style = "float:left" alt="logo"> 
+<h1><img align="left" width="80" height="80" src="https://github.com/retrx0/8puzzle/blob/master/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" style = "float:left" alt="logo"> 
 8puzzle</h1>
 
 8puzzle game implemented in Java
