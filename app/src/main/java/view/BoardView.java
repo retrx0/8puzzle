@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -250,8 +251,9 @@ public class BoardView extends View implements OnClickListener {
             int index = parent.indexOfChild(this);
             parent.removeView(this);
             parent.addView(game.boardView, index, getLayoutParams());
-            if(SettingsFragment.enableTimer){
-                final CountUpTimer timer  = new CountUpTimer(30000) {
+
+            if(SettingsFragment.isTimerEnabled){
+                final CountUpTimer timer  = new CountUpTimer(40000) {
                     @Override
                     public void onTick(int second) {
                         game.timerTextView.setText("Time: "+second);

@@ -1,9 +1,5 @@
 package com.eysoft.a8puzzle;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -21,6 +17,11 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.preference.PreferenceManager;
 
 import AI.AStar;
 import AI.HeuristicManhattan;
@@ -57,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private long mLastShakeTime;
     private SensorManager mSensorMgr;
 
+    SharedPreferences preferences;
+    public final static String darkModeKey = "darkmode_switch_pref";
+    public final static String enableTimePrefKey = "display_time_pref";
+    public final static String gridSizePrefKey = "grid_size";
+    public final String autoDarkModeCheckBokPrefKey = "auto_dark_pref_key";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -84,7 +91,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerometer != null) {
             mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
-        if (SettingsFragment.isAutoDarkMode){
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean autoDark  = preferences.getBoolean("auto_dark_pref_key", true);
+
+        if (autoDark){
+            preferences.edit().putBoolean("darkmode_switch_pref",false).apply();
             int nightModeFlags = getBaseContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             switch (nightModeFlags) {
                 case Configuration.UI_MODE_NIGHT_YES:
@@ -101,7 +114,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     break;
             }
         }else {
-            if (SettingsFragment.isPrefDarkModeEnabled){
+            boolean prefDarkModeSwitchEnabled = preferences.getBoolean("darkmode_switch_pref", false);
+
+            if (prefDarkModeSwitchEnabled){
                 setTheme(R.style.StandardDark);
                 setDarkMode(true);
             }else {
@@ -109,6 +124,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 setDarkMode(false);
             }
         }
+
+        String gridSelect = preferences.getString(gridSizePrefKey, "3x3");
+        Log.d(TAG, "grid size settings"+ gridSelect);
 
     }
 
@@ -181,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     mLastShakeTime = curTime;
                     Log.d("8puzzle", "Shake, Rattle, and Roll");
                     Toast.makeText(this, "Shuffled", Toast.LENGTH_SHORT).show();
+                    boardView.newPuzzle("123 456 780");
                 }
             }
         }
@@ -206,5 +225,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
         }
     }
-
 }
