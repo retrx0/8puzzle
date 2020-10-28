@@ -15,18 +15,29 @@ import androidx.preference.PreferenceManager;
 
 
 
-public class GridSelectFragment extends DialogFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class GridSelectFragment extends DialogFragment{
 
     final CharSequence[] grid_select_items = {"3x3","4x4"};
     public static String selection = "3x3";
+    public final static String gridSizePrefKey = "grid_size";
+
     Boolean selection_flag = false;
     MainActivity mainGameActivity;
+    SharedPreferences preferences;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        String sp = preferences.getString(gridSizePrefKey, "3x3");
+        int cp;
+        assert sp != null;
+        if (sp.equals("3x3")) cp =0;
+        else cp = 1;
+
         mainGameActivity = (MainActivity) this.getContext();
-        return new AlertDialog.Builder(getActivity()).setTitle("Choose Grid").setSingleChoiceItems(grid_select_items, 0, new DialogInterface.OnClickListener() {
+        return new AlertDialog.Builder(getActivity()).setTitle("Choose Grid").setSingleChoiceItems(grid_select_items, cp, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
@@ -38,6 +49,8 @@ public class GridSelectFragment extends DialogFragment implements SharedPreferen
                         selection = "4x4";
                         selection_flag = true;
                         break;
+                    default:
+                        selection  = "3x3";
                 }
 
             }
@@ -62,15 +75,6 @@ public class GridSelectFragment extends DialogFragment implements SharedPreferen
             }
         }).create();
 
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-//        if ("grid_size".equals(key)){
-//           pref.getString("")
-//        }
     }
 
 }
