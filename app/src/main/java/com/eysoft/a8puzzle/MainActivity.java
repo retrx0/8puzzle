@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
@@ -40,9 +42,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public TextView goalView;
     public Button shuffle;
     public Button solve;
-//    public Button skipAhead;
+    //public Button skipAhead;
 
     public TextView timerTextView;
+
     public Board goal;
     public Solver solver;
 
@@ -59,10 +62,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorMgr;
 
     SharedPreferences preferences;
+
+    //<editor-fold desc = "Pref Keys" defaultstate = "collapsed">
     public final static String darkModeKey = "darkmode_switch_pref";
     public final static String enableTimePrefKey = "display_time_pref";
     public final static String gridSizePrefKey = "grid_size";
     public final String autoDarkModeCheckBokPrefKey = "auto_dark_pref_key";
+    //</editor-fold>
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //<editor-fold defaultstate = "collapsed" desc = "Variables init">
         boardView = (BoardView) findViewById(R.id.boardView);
         moveView = (TextView) findViewById(R.id.moves);
         goalView = (TextView) findViewById(R.id.goal);
@@ -80,10 +88,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         solve = (Button) findViewById(R.id.solveBtn);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
         //        skipAhead = (Button) findViewById(R.id.skipAhead);
+        //</editor-fold>
+
         goal = new Board("123 456 780");
         solver = new SolverMemoDecorator(new AStar(goal, new HeuristicManhattan(goal)));
         setupBoardView();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //<editor-fold defaultstate="collapsed" desc="Shake Sensor">
         // Get a sensor manager to listen for shakes
         mSensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         // Listen for shakes
@@ -91,9 +104,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerometer != null) {
             mSensorMgr.registerListener((SensorEventListener) this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+        //</editor-fold>
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+        //<editor-fold desc = "Dark Mode Switching" defaultstate = "collapsed">
         boolean autoDark  = preferences.getBoolean("auto_dark_pref_key", true);
 
         if (autoDark){
@@ -119,37 +132,51 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (prefDarkModeSwitchEnabled){
                 setTheme(R.style.StandardDark);
                 setDarkMode(true);
+                setActivityBackgroundColor(Color.rgb(40,40,40));
             }else {
                 setTheme(R.style.StandardLight);
                 setDarkMode(false);
             }
         }
+        //</editor-fold>
 
         String gridSelect = preferences.getString(gridSizePrefKey, "3x3");
         Log.d(TAG, "grid size settings"+ gridSelect);
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_menu, menu);
-        return true;
+    public void showMyDialog(int dialog) {
+        switch (dialog){
+            case DIALOG_ABOUT:
+                break;
+            case DIALOG_WIN:
+                DialogFragment win = new WinFragment();
+                win.show(getSupportFragmentManager(), "Win Fragment");
+                break;
+        }
     }
 
-    @Override
-    protected void onResume() {
-        Log.d(TAG, "Resuming activity...");
-
-        super.onResume();
+    public void setActivityBackgroundColor(int color) {
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(color);
     }
 
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "Pausing activity...");
-        super.onPause();
-        boardView.pause();
+    public void gridSizeChangeOnClick(MenuItem item) {
+        DialogFragment grid_select = new GridSelectFragment();
+        grid_select.show(getSupportFragmentManager(), "Grid Select");
     }
+
+    public static void setDarkMode(boolean mode){
+        if (mode){
+            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+            Piece.shadowColor = Color.rgb(22,22,22);
+        }
+        else {
+            Piece.shadowColor = Color.rgb(197,197,197);
+            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+        }
+    }
+
 
     public void setupBoardView() {
         shuffle.setOnClickListener(boardView);
@@ -173,15 +200,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    public void showMyDialog(int dialog) {
-        switch (dialog){
-            case DIALOG_ABOUT:
-                break;
-            case DIALOG_WIN:
-                DialogFragment win = new WinFragment();
-                win.show(getSupportFragmentManager(), "Win Fragment");
-                break;
-        }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "Resuming activity...");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "Pausing activity...");
+        super.onPause();
+        boardView.pause();
     }
 
     @Override
@@ -210,19 +246,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    public void gridSizeChangeOnClick(MenuItem item) {
-        DialogFragment grid_select = new GridSelectFragment();
-        grid_select.show(getSupportFragmentManager(), "Grid Select");
-    }
-
-    public static void setDarkMode(boolean mode){
-        if (mode){
-            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
-            Piece.shadowColor = Color.rgb(22,22,22);
-        }
-        else {
-            Piece.shadowColor = Color.rgb(197,197,197);
-            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
-        }
-    }
 }
