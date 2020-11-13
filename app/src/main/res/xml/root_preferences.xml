@@ -24,7 +24,6 @@
             android:defaultValue="false"
             android:entries="@array/list_items"
             android:entryValues="@array/list_items"
-            android:icon="@drawable/ic_baseline_grid_on_24"
             android:key="grid_size"
             android:title="Grid Size" />
         <SwitchPreference

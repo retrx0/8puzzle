@@ -3,11 +3,13 @@ package view;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.view.animation.TranslateAnimation;
 import android.view.animation.Interpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
+
+import androidx.preference.PreferenceManager;
 
 import com.eysoft.a8puzzle.GridSelectFragment;
 import com.eysoft.a8puzzle.MainActivity;
@@ -57,6 +61,17 @@ public class BoardView extends View implements OnClickListener {
         private int solving; // Equal to n number of moves from goal when AI is animating solution to puzzle.  Counts down to 0.
         private final MotionEvent cpuTouch = MotionEvent.obtain(0, 0, MotionEvent.ACTION_DOWN, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         private final float aiDuration = 100; // Piece animation duration on cpuTouch.
+
+        private int counterValue = 0;
+        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        final Handler handler = new Handler();
+        public static String highScoreKey = "high_score";
+        public static int highestScore = 200;
+        boolean timerStart = false;
+        boolean timerReset = false;
+        boolean firstTouch = true;
+        int seconds = 0;
+        CountUpTimer timer;
 
         public BoardView(Context context) {
             super(context);
@@ -182,10 +197,41 @@ public class BoardView extends View implements OnClickListener {
                 Move move = shortestPath.removeFirstMove();
                 col = board.getCol(move.fromIndex);
                 row = board.getRow(move.fromIndex);
+
+                timerStart = false;
+
                 // If AI is NOT animating solution, then event is a player touch.
             } else if (solving == 0) {
                 col = (int) (event.getX() / Piece.width);
                 row = (int) (event.getY() / Piece.height);
+
+                final boolean timerEnabled = preferenceManager.getBoolean(SettingsFragment.enableTimePrefKey, false);
+                Log.d(TAG, "ENABLE TIME: "+ timerEnabled);
+                timerStart = timerEnabled;
+                if(firstTouch){
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(timerStart){
+                                seconds++;
+                                counterValue = seconds;
+                                game.timerTextView.setText("Time: "+seconds+" s");
+                                if(highestScore != 0)
+                                    highestScore--;
+                                else
+                                    highestScore = highestScore + 3;
+                            }
+                            if(timerReset){
+                                seconds = 0;
+                                timerReset = false;
+                                handler.removeCallbacks(this);
+                            }
+                            handler.postDelayed(this, 1000);
+                        }
+                    });
+                    firstTouch = false;
+                }
+
                 // If AI is animating solution but event is a player touch, then ignore event and return.
             } else return true;
 
@@ -218,6 +264,7 @@ public class BoardView extends View implements OnClickListener {
             }
         }
 
+        @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -252,17 +299,7 @@ public class BoardView extends View implements OnClickListener {
             parent.removeView(this);
             parent.addView(game.boardView, index, getLayoutParams());
 
-            if(SettingsFragment.isTimerEnabled){
-                final CountUpTimer timer  = new CountUpTimer(40000) {
-                    @Override
-                    public void onTick(int second) {
-                        game.timerTextView.setText("Time: "+second);
-                        System.out.println(second);
-                    }
-                };
-                timer.start();
-            }
-
+            handler.removeCallbacksAndMessages(null);
         }
 
         private void moveAhead(int moves) {
@@ -283,7 +320,18 @@ public class BoardView extends View implements OnClickListener {
         }
 
         private void checkWin() {
-            if (board.equals(game.goal)) game.showMyDialog(MainActivity.DIALOG_WIN);
+            if (board.equals(game.goal)) {
+                game.showMyDialog(MainActivity.DIALOG_WIN);
+                timerReset = true;
+                Log.d(TAG, "HIGH SCORE: "+ (highestScore));
+                int priorHighScore  = preferenceManager.getInt(highScoreKey, 0);
+                if (priorHighScore > -1) {
+                    if (highestScore > priorHighScore) {
+                        preferenceManager.edit().putInt(highScoreKey, (highestScore)).apply();
+                        game.highScoreView.setText("High Score: " + (highestScore));
+                    }
+                }
+            }
         }
 
         private void updateAI() {

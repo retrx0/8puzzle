@@ -11,6 +11,11 @@
         app:showAsAction="always"
         tools:targetApi="o" />
     <item
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:onClick="logInMenuClicked"
+        android:title="Acoount"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/settingsMenu"
         android:icon="@drawable/ic_baseline_settings_24"
         android:onClick="menuItemOnClick"

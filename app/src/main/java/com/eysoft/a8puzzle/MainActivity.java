@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,11 +20,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 
 import AI.AStar;
 import AI.HeuristicManhattan;
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //public Button skipAhead;
 
     public TextView timerTextView;
+    public TextView highScoreView;
 
     public Board goal;
     public Solver solver;
@@ -87,7 +97,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         shuffle = (Button) findViewById(R.id.shuffle);
         solve = (Button) findViewById(R.id.solveBtn);
         timerTextView = (TextView) findViewById(R.id.timerTextView);
+        highScoreView = findViewById(R.id.highScoreTextView);
         //        skipAhead = (Button) findViewById(R.id.skipAhead);
+
         //</editor-fold>
 
         goal = new Board("123 456 780");
@@ -141,7 +153,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //</editor-fold>
 
         String gridSelect = preferences.getString(gridSizePrefKey, "3x3");
-        Log.d(TAG, "grid size settings"+ gridSelect);
+        Log.d(TAG, "grid size settings "+ gridSelect);
+
+        int highScore  = preferences.getInt(BoardView.highScoreKey, 0);
+        highScoreView.setText("High Score: "+highScore);
+
+        // Check for existing Google Sign In account, if the user is already signed in
+        // the GoogleSignInAccount will be non-null.
+        //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        //updateUI(account);
 
     }
 
@@ -166,17 +186,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         grid_select.show(getSupportFragmentManager(), "Grid Select");
     }
 
+    public void logInMenuClicked(MenuItem item) {
+        final LoginFragment loginFragment = new LoginFragment();
+        loginFragment.show(getSupportFragmentManager(), "login_fragment");
+    }
+
     public static void setDarkMode(boolean mode){
         if (mode){
-            Piece.colors = new int[]{Color.rgb(32, 32, 32), Color.rgb(32, 32, 32)};
+            Piece.colors = new int[]{Color.rgb(34, 34, 34), Color.rgb(34, 34, 34)};
             Piece.shadowColor = Color.rgb(22,22,22);
         }
         else {
-            Piece.shadowColor = Color.rgb(197,197,197);
-            Piece.colors = new int[]{Color.rgb(0, 191, 255), Color.rgb(0, 191, 255)};
+            Piece.colors = new int[]{Color.rgb(52, 145, 250),Color.rgb(117, 100, 245), Color.rgb(213, 10, 219)};;
+            Piece.shadowColor = Color.rgb(96,84,244);
         }
     }
-
 
     public void setupBoardView() {
         shuffle.setOnClickListener(boardView);
@@ -198,6 +222,47 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        if (requestCode == 40) {
+            // The Task returned from this call is always completed, no need to attach
+            // a listener.
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            // Signed in successfully, show authenticated UI.
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment loginDialog = fragmentManager.findFragmentByTag("login_fragment");
+            DialogFragment dialog = (DialogFragment) loginDialog;
+            dialog.dismiss();
+            updateUI(account);
+        } catch (ApiException e) {
+            // The ApiException status code indicates the detailed failure reason.
+            // Please refer to the GoogleSignInStatusCodes class reference for more information.
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            updateUI(null);
+        }
+    }
+
+    public void updateUI(GoogleSignInAccount account){
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+            String personName = acct.getDisplayName();
+            String personGivenName = acct.getGivenName();
+            String personFamilyName = acct.getFamilyName();
+            String personEmail = acct.getEmail();
+            String personId = acct.getId();
+            Uri personPhoto = acct.getPhotoUrl();
+        }
     }
 
     @Override
@@ -245,5 +310,4 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
 }

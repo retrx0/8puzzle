@@ -29,7 +29,7 @@ public class Piece {
     public static float width;
     public static float height;
 
-    public static int[] colors = {Color.rgb(0,191,255), Color.rgb(0,191,255)};
+    public static int[] colors = Piece.colors = new int[]{Color.rgb(165, 70, 250),Color.rgb(83, 168, 255), Color.rgb(111, 100, 245)};
     public static int shadowColor = Color.rgb(197,197,197);
 
     public Piece(String id, int row, int col) {
@@ -65,12 +65,12 @@ public class Piece {
 
         ShapeDrawable shadow = new ShapeDrawable(tile);
         shadow.setBounds(margin, margin, rht, bot);
-        shadow.getPaint().setShadowLayer(1, margin-4, margin, shadowColor);
+        shadow.getPaint().setShadowLayer(1, margin-5, margin-2, shadowColor);
         shadow.draw(canvas);
 
         ShapeDrawable drawable = new ShapeDrawable(tile);
         drawable.setBounds(margin, margin, rht, bot);
-        drawable.getPaint().setShader(new LinearGradient(margin, margin, rht, bot, colors, null, Shader.TileMode.REPEAT));
+        drawable.getPaint().setShader(new LinearGradient(margin, margin, rht, bot, colors, null, Shader.TileMode.CLAMP));
         drawable.draw(canvas);
 
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -79,7 +79,7 @@ public class Piece {
         textPaint.setTextAlign(Align.CENTER);
 
         Rect r = drawable.getBounds();
-        textPaint.setTextSize(r.height() * 0.75f);
+        textPaint.setTextSize(r.height() * 0.65f);
         FontMetrics fm = textPaint.getFontMetrics();
         float xText = r.exactCenterX();
         float yText = r.exactCenterY() - (fm.ascent + fm.descent) / 2.0f;

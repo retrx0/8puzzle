@@ -33,7 +33,8 @@ public class GridSelectFragment extends DialogFragment{
         int cp;
         assert sp != null;
         if (sp.equals("3x3")) cp =0;
-        else cp = 1;
+        else if(sp.equals("4x4")) cp = 1;
+        else cp = 0;
 
         mainGameActivity = (MainActivity) this.getContext();
         return new AlertDialog.Builder(getActivity()).setTitle("Choose Grid").setSingleChoiceItems(grid_select_items, cp, new DialogInterface.OnClickListener() {
