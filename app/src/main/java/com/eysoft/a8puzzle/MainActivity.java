@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         else {
             Piece.colors = new int[]{Color.rgb(52, 145, 250),Color.rgb(117, 100, 245), Color.rgb(213, 10, 219)};;
-            Piece.shadowColor = Color.rgb(96,84,244);
+            Piece.shadowColor = Color.rgb(192,192,192);
         }
     }
 
