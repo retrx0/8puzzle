@@ -3,6 +3,7 @@
 
 8puzzle game implemented in Java
 
+<img src = "https://github.com/retrx0/8puzzle/blob/master/app/src/main/res/rnds/home.png" height = "550" width = "300"></img>
 ## AI
 * Heuristic - AStar
 
