@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.eysoft.a8puzzle"
+        applicationId 'com.illosoft.a8puzzle'
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
