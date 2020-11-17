@@ -3,7 +3,7 @@
 
 8 puzzle game for android
 
-<img src = "https://github.com/retrx0/8puzzle/blob/master/app/src/main/res/rnds/home.png" height = "550" width = "300"></img>
+<img src = "https://github.com/retrx0/8puzzle/blob/master/rnds/home.png" height = "550" width = "300"></img>
 ## AI
 * Heuristic - AStar
 
